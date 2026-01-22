@@ -73,25 +73,33 @@ cd 01-smart-city-data-cleaning
 ```bash
 pip install -r requirements.txt
 ```
+
+### Usage
+
 Run the scripts in the following order:
 
 #### Step 1: Generate Dirty Dataset
 
 ```bash
+python generate_dirty_data.py
 ```
 
 **Output:** `smart_city_dirty_data.csv` (10,000 records with embedded quality issues)
+
 #### Step 2: Clean the Data
 
 ```bash
 python clean_data.py
 ```
 
+**Output:** `smart_city_clean_data.csv` (production-ready dataset)
+
 #### Step 3: Compare Results
 
 ```bash
 python compare_results.py
 ```
+
 **Output:** `data_quality_comparison.png` (visual dashboard showing improvements)
 
 ---
@@ -101,12 +109,24 @@ python compare_results.py
 ### Quantitative Improvements
 
 The cleaning pipeline achieves significant quality enhancements:
+
 | Metric | Before Cleaning | After Cleaning | Improvement |
 |--------|----------------|----------------|-------------|
-| **Total Records** | 10,500 | ~9,200 | 12.4% reduction (low-quality removed) |
-| **Missing Values** | 2,400+ | 0 | 100% resolved |
-| **Duplicates** | 500+ | 0 | 100% eliminated |
-| **Categorical Variations** | 15+ | 5 | Fully standardized |
+| **Total Records** | 10,500 | 7,284 | 30.6% reduction (low-quality removed) |
+| **Missing Values** | 4,655 | 0 | 100% resolved |
+| **Duplicates** | 296 | 64 | 78.4% eliminated |
+| **Categorical Variations** | 9 | 5 | Fully standardized |
+| **Statistical Outliers** | 429 | 0 | Removed/capped |
+
+### Visual Evidence
+
+The comparison dashboard provides comprehensive before/after analysis:
+
+- **Distribution plots**: Histograms showing outlier removal and data normalization
+- **Box plots**: Demonstrating variance reduction and consistency improvement
+- **Metrics table**: Quantitative improvement summary with key statistics
+
+![Data Quality Comparison](images/data_quality_comparison.png)
 
 ---
 
@@ -146,12 +166,24 @@ The cleaning pipeline achieves significant quality enhancements:
 
 ### Statistical Techniques Applied
 
-#### Outlier Detection: IQR Method
+#### 1. Missing Value Imputation
 
+- **Zone-based median imputation**: Preserves spatial distribution patterns
+- **Linear interpolation**: Leverages temporal autocorrelation in time-series data
+- **Logical removal**: Eliminates expected failures (maintenance/error status)
+
+#### 2. Outlier Detection: IQR Method
+
+**Formula:**
 ```
 Lower Bound = Q1 - 3 × IQR
 Upper Bound = Q3 + 3 × IQR
 ```
+
+Where:
+- Q1 = 25th percentile
+- Q3 = 75th percentile
+- IQR = Interquartile Range (Q3 - Q1)
 
 **Domain Validation Rules:**
 
@@ -175,7 +207,9 @@ Upper Bound = Q3 + 3 × IQR
 ├── requirements.txt             # Python dependencies
 ├── README.md                    # This file
 ├── LICENSE                      # MIT License
-└── .gitignore                   # Git ignore rules
+├── .gitignore                   # Git ignore rules
+└── images/                      # Visualizations folder
+    └── data_quality_comparison.png
 ```
 
 ---
@@ -191,6 +225,13 @@ This data cleaning pipeline is production-ready and can be adapted for:
 3. **Transportation**: Process traffic data for route optimization
 4. **Environmental Monitoring**: Clean air quality data for compliance reporting
 
+### Technical Applications
+
+- **Machine Learning Preprocessing**: Ensure high-quality training data
+- **Data Warehousing**: ETL pipeline component
+- **API Data Validation**: Backend data sanitization layer
+- **Analytics Dashboards**: Reliable data source preparation
+
 ---
 
 ## 🎓 Skills Demonstrated
@@ -202,6 +243,7 @@ This project showcases proficiency in:
 - ✅ **Statistics**: IQR method, imputation techniques, distribution analysis
 - ✅ **Data Visualization**: Matplotlib, Seaborn
 - ✅ **Best Practices**: Documentation, code comments, reproducibility
+- ✅ **Version Control**: Git workflow and GitHub collaboration
 
 ---
 
@@ -228,7 +270,7 @@ This project is open-source and available under the MIT License.
 ## 🙏 Acknowledgments
 
 - Dataset inspired by real-world Smart City IoT infrastructure
-- Statistical methods based on industry best practices
+- Statistical methods based on industry best practices (Tukey, 1977)
 - Built with Python, Pandas, and the open-source data science ecosystem
 
 ---
@@ -237,13 +279,4 @@ This project is open-source and available under the MIT License.
 
 <div align="center">
   <sub>Built with ❤️ and Python by Jonathan Chavarria Peralta</sub>
-</div>| **Statistical Outliers** | 450+ | 0 | Removed/capped |
-
-
-
-**Output:** `smart_city_clean_data.csv` (production-ready dataset)
-
-python generate_dirty_data.py
-
-### Usage
-
+</div>
