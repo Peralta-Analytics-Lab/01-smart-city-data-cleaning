@@ -74,10 +74,10 @@ class SmartCityDataCleaner:
         initial_count = len(self.df_clean)
         
         # Convert to datetime with error handling
+        # FIXED: Removed 'infer_datetime_format=True' for pandas 2.0+ compatibility
         self.df_clean['timestamp'] = pd.to_datetime(
             self.df_clean['timestamp'], 
-            errors='coerce',
-            infer_datetime_format=True
+            errors='coerce'
         )
         
         # Remove records with unparseable timestamps

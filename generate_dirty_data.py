@@ -39,8 +39,8 @@ def generate_smart_city_data(n_records=10000):
     # Sensor ID generation
     sensor_zones = ['Downtown', 'Industrial_Park', 'Residential_North', 
                     'Commercial_District', 'University_Area']
-    sensor_ids = [f"SNS_{zone}_{random.randint(1000, 9999)}" 
-                  for _ in range(n_records)]
+    sensor_ids = [f"SNS_{random.choice(sensor_zones)}_{random.randint(1000, 9999)}" 
+              for _ in range(n_records)]
     
     # Traffic flow (vehicles per hour)
     traffic_flow = np.random.normal(loc=450, scale=120, size=n_records)
